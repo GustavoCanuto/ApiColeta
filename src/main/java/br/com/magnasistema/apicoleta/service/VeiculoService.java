@@ -11,8 +11,8 @@ import br.com.magnasistema.apicoleta.dto.veiculo.VeiculoDtoDetalhar;
 import br.com.magnasistema.apicoleta.entity.Empresa;
 import br.com.magnasistema.apicoleta.entity.Veiculo;
 import br.com.magnasistema.apicoleta.enums.TipoVeiculo;
-import br.com.magnasistema.apicoleta.repository.EmpresaRepository;
 import br.com.magnasistema.apicoleta.repository.VeiculoRepository;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarEmpresa;
 import br.com.magnasistema.apicoleta.validacoes.ValidacaoException;
 
 @Service
@@ -22,18 +22,18 @@ public class VeiculoService {
 	private VeiculoRepository veiculoRepository;
 
 	@Autowired
-	private EmpresaRepository empresaRepository;
+	private BuscarEmpresa getEmpresa;
 
 	public VeiculoDtoDetalhar cadastrarVeiculo(VeiculoDtoCadastro dados) {
 
-		if (veiculoRepository.existsByPlaca(dados.placa())) {
-			throw new ValidacaoException("Placa de veiculo já registrado!");
-		}
+		validaDuplicadas(dados);
 
-		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
-				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
+//		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
+//				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
 
-		var veiculo = new Veiculo(dados, empresa);
+		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
+
+		Veiculo veiculo = new Veiculo(dados, empresa);
 
 		veiculoRepository.save(veiculo);
 
@@ -87,20 +87,20 @@ public class VeiculoService {
 
 	public VeiculoDtoDetalhar atualizarCadastro(VeiculoDtoAtualizar dados, long id) {
 
-		if (veiculoRepository.existsByPlaca(dados.placa())) {
-			throw new ValidacaoException("Placa de veiculo já registrado!");
-		}
+		validaDuplicadas(dados);
 
-		Empresa empresa = null;
+//		Empresa empresa = null;
+//
+//		if (dados.idEmpresa() != null) {
+//
+//			empresa = empresaRepository.findById(dados.idEmpresa())
+//					.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
+//
+//		}
 
-		if (dados.idEmpresa() != null) {
+		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
 
-			empresa = empresaRepository.findById(dados.idEmpresa())
-					.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-
-		}
-
-		var veiculo = veiculoRepository.getReferenceById(id);
+		Veiculo veiculo = veiculoRepository.getReferenceById(id);
 
 		veiculo.atualizarInformacoes(dados, empresa);
 
@@ -119,6 +119,18 @@ public class VeiculoService {
 
 		veiculoRepository.deleteById(id);
 
+	}
+
+	private void validaDuplicadas(VeiculoDtoCadastro dados) {
+		if (veiculoRepository.existsByPlaca(dados.placa())) {
+			throw new ValidacaoException("Placa de veiculo já registrado!");
+		}
+	}
+
+	private void validaDuplicadas(VeiculoDtoAtualizar dados) {
+		if (veiculoRepository.existsByPlaca(dados.placa())) {
+			throw new ValidacaoException("Placa de veiculo já registrado!");
+		}
 	}
 
 }

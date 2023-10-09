@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import br.com.magnasistema.apicoleta.dto.funcionario.FuncionarioDtoListagemEquipes;
 import br.com.magnasistema.apicoleta.dto.funcionarioequipe.FuncionarioEquipeDtoCadastro;
 import br.com.magnasistema.apicoleta.dto.funcionarioequipe.FuncionarioEquipeDtoDetalhar;
+import br.com.magnasistema.apicoleta.entity.Equipe;
 import br.com.magnasistema.apicoleta.entity.Funcionario;
 import br.com.magnasistema.apicoleta.entity.FuncionarioEquipe;
-import br.com.magnasistema.apicoleta.repository.EquipeRepository;
 import br.com.magnasistema.apicoleta.repository.FuncionarioEquipeRepository;
-import br.com.magnasistema.apicoleta.repository.FuncionarioRepository;
-import br.com.magnasistema.apicoleta.validacoes.ValidacaoException;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarEquipe;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarFuncionario;
 import br.com.magnasistema.apicoleta.validacoes.funcionarioequipe.ValidadorFuncionarioEquipe;
 
 @Service
@@ -22,23 +22,27 @@ public class FuncionarioEquipeService {
 	@Autowired
 	private FuncionarioEquipeRepository funcionarioEquipeRepository;
 
-	@Autowired
-	private EquipeRepository equipeRepository;
 
 	@Autowired
-	private FuncionarioRepository funcionarioRepository;
+	private BuscarEquipe getEquipe;
+
+	@Autowired
+	private BuscarFuncionario getFuncionario;
 
 	@Autowired
 	private List<ValidadorFuncionarioEquipe> validadores;
 
 	public FuncionarioEquipeDtoDetalhar cadastrarFuncionarioEquipe(FuncionarioEquipeDtoCadastro dados) {
 
-		var equipe = equipeRepository.findById(dados.idEquipe())
-				.orElseThrow(() -> new ValidacaoException("Id da Equipe não encontrado"));
+//		var equipe = equipeRepository.findById(dados.idEquipe())
+//				.orElseThrow(() -> new ValidacaoException("Id da Equipe não encontrado"));
+//
+//		var funcionario = funcionarioRepository.findById(dados.idFuncionario())
+//				.orElseThrow(() -> new ValidacaoException("Id do Funcionario não encontrado")); 
 
-		var funcionario = funcionarioRepository.findById(dados.idFuncionario())
-				.orElseThrow(() -> new ValidacaoException("Id do Funcionario não encontrado")); 
-
+		Equipe equipe = getEquipe.buscar(dados.idEquipe());
+		
+		Funcionario funcionario = getFuncionario.buscar(dados.idFuncionario());
 
 		validadores.forEach(v -> v.validar(dados));
 		
@@ -52,7 +56,7 @@ public class FuncionarioEquipeService {
 
 	public FuncionarioDtoListagemEquipes listarTodasEquipesDeUmFuncionario(long id) {
 
-		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
+		Funcionario funcionario = getFuncionario.buscar(id);
 
 		return new FuncionarioDtoListagemEquipes(funcionario);
 	}

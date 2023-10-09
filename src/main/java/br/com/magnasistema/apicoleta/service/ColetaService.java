@@ -11,12 +11,14 @@ import br.com.magnasistema.apicoleta.dto.coleta.ColetaDtoAtualizar;
 import br.com.magnasistema.apicoleta.dto.coleta.ColetaDtoCadastro;
 import br.com.magnasistema.apicoleta.dto.coleta.ColetaDtoDetalhar;
 import br.com.magnasistema.apicoleta.dto.coleta.ColetaDtoModificar;
+import br.com.magnasistema.apicoleta.entity.Bairro;
 import br.com.magnasistema.apicoleta.entity.Coleta;
 import br.com.magnasistema.apicoleta.entity.Destino;
-import br.com.magnasistema.apicoleta.repository.BairroRepository;
+import br.com.magnasistema.apicoleta.entity.Equipe;
 import br.com.magnasistema.apicoleta.repository.ColetaRepository;
-import br.com.magnasistema.apicoleta.repository.DestinoRepository;
-import br.com.magnasistema.apicoleta.repository.EquipeRepository;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarBairro;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarDestino;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarEquipe;
 import br.com.magnasistema.apicoleta.validacoes.ValidacaoException;
 import br.com.magnasistema.apicoleta.validacoes.coleta.atualizar.ValidadorAtualizacaoColeta;
 import br.com.magnasistema.apicoleta.validacoes.coleta.cadastro.ValidadorCadastroColeta;
@@ -28,13 +30,13 @@ public class ColetaService {
 	private ColetaRepository coletaRepository;
 
 	@Autowired
-	private EquipeRepository equipeRepository;
+	private BuscarEquipe getEquipe;
 
 	@Autowired
-	private BairroRepository bairroRepository;
+	private BuscarBairro getBairro;
 
 	@Autowired
-	private DestinoRepository destinoRepository;
+	private BuscarDestino getDestino;
 
 	@Autowired
 	private List<ValidadorCadastroColeta> validadoresCadastro;
@@ -46,15 +48,23 @@ public class ColetaService {
 
 		validarDados(dados);
 
-		var equipe = equipeRepository.findById(dados.idEquipe())
-				.orElseThrow(() -> new ValidacaoException("Id da Equipe não encontrado"));
+//		var equipe = equipeRepository.findById(dados.idEquipe())
+//				.orElseThrow(() -> new ValidacaoException("Id da Equipe não encontrado"));
+//
+//		var bairro = bairroRepository.findById(dados.idBairro())
+//				.orElseThrow(() -> new ValidacaoException("Id do Bairro não encontrado"));
+//
+//		var destino = destinoRepository.findById(dados.idDestino())
+//				.orElseThrow(() -> new ValidacaoException("Id do Destino não encontrado"));
 
-		var bairro = bairroRepository.findById(dados.idBairro())
-				.orElseThrow(() -> new ValidacaoException("Id do Bairro não encontrado"));
-
-		var destino = destinoRepository.findById(dados.idDestino())
-				.orElseThrow(() -> new ValidacaoException("Id do Destino não encontrado"));
-
+		
+		Bairro bairro = getBairro.buscar(dados.idBairro());
+		
+		Equipe equipe = getEquipe.buscar(dados.idEquipe());
+		
+		Destino destino = getDestino.buscar(dados.idDestino());
+		
+		
 		validadoresCadastro.forEach(v -> v.validar(dados));
 
 		var coleta = new Coleta(dados, equipe, bairro, destino);
@@ -102,15 +112,18 @@ public class ColetaService {
 
 	public ColetaDtoDetalhar modificarColeta(ColetaDtoModificar dados, Long id) {
 
-		Destino destino = null;
-
-		if (dados.idDestino() != null) {
-
-			destino = destinoRepository.findById(dados.idDestino())
-					.orElseThrow(() -> new ValidacaoException("Id do Destino não encontrado"));
-
-		}
-		var coleta = coletaRepository.getReferenceById(id);
+//		Destino destino = null;
+//
+//		if (dados.idDestino() != null) {
+//
+//			destino = destinoRepository.findById(dados.idDestino())
+//					.orElseThrow(() -> new ValidacaoException("Id do Destino não encontrado"));
+//
+//		}
+		
+		Destino destino = getDestino.buscar(dados.idDestino());
+		
+		Coleta coleta = coletaRepository.getReferenceById(id);
 
 		coleta.modificarInformacoes(dados, destino);
 

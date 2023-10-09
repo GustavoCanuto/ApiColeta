@@ -3,9 +3,11 @@ package br.com.magnasistema.apicoleta.dto.empresa;
 import br.com.magnasistema.apicoleta.enums.TipoEmpresa;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public record EmpresaDtoAtualizar(
 
+		@Size(max = 255)
 		String nome,
 
 		@Pattern(regexp = "\\d{14,20}", message = "O CNPJ deve conter de 14 a 20 dígitos.")

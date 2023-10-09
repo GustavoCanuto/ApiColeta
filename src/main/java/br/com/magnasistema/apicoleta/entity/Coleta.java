@@ -12,11 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
 
 @Table(name = "tb_coleta")
 @Entity(name = "Coleta")
-@EqualsAndHashCode(of = "id")
 public class Coleta {
 
 	@Id

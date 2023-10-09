@@ -10,7 +10,7 @@ import br.com.magnasistema.apicoleta.dto.bairro.BairroDtoDetalhar;
 import br.com.magnasistema.apicoleta.entity.Bairro;
 import br.com.magnasistema.apicoleta.entity.Cidade;
 import br.com.magnasistema.apicoleta.repository.BairroRepository;
-import br.com.magnasistema.apicoleta.validacoes.buscador.BuscarCidade;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarCidade;
 
 @Service
 public class BairroService {
@@ -28,7 +28,7 @@ public class BairroService {
 //		Cidade cidade = cidadeRepository.findById(dados.idCidade())
 //				.orElseThrow(() -> new ValidacaoException("Id da cidade informada não existe!"));
 
-		Bairro bairro = new Bairro(dados, cidade);
+		Bairro bairro = new Bairro(dados, cidade); 
 
 		bairroRepository.save(bairro);
 
@@ -79,7 +79,7 @@ public class BairroService {
 //					.orElseThrow(() -> new ValidacaoException("Id da cidade informada não existe!"));
 //		}
 
-		var bairro = bairroRepository.getReferenceById(id);
+		Bairro bairro = bairroRepository.getReferenceById(id);
 
 		bairro.atualizarInformacoes(dados, cidade);
 

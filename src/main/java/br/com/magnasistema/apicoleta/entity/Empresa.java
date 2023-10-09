@@ -18,11 +18,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
 
 @Table(name = "tb_empresa")
 @Entity(name = "Empresa")
-@EqualsAndHashCode(of = "id")
 public class Empresa {
 
 	@Id

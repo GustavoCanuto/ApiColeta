@@ -11,10 +11,9 @@ import br.com.magnasistema.apicoleta.dto.destino.DestinoDtoDetalhar;
 import br.com.magnasistema.apicoleta.entity.Cidade;
 import br.com.magnasistema.apicoleta.entity.Destino;
 import br.com.magnasistema.apicoleta.entity.Empresa;
-import br.com.magnasistema.apicoleta.repository.CidadeRepository;
 import br.com.magnasistema.apicoleta.repository.DestinoRepository;
-import br.com.magnasistema.apicoleta.repository.EmpresaRepository;
-import br.com.magnasistema.apicoleta.validacoes.ValidacaoException;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarCidade;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarEmpresa;
 
 @Service
 public class DestinoService {
@@ -23,20 +22,24 @@ public class DestinoService {
 	private DestinoRepository destinoRepository;
 
 	@Autowired
-	private CidadeRepository cidadeRepository;
+	private BuscarCidade getCidade;
 
 	@Autowired
-	private EmpresaRepository empresaRepository;
+	private BuscarEmpresa getEmpresa;
 
 	public DestinoDtoDetalhar cadastrarDestino(DestinoDtoCadastro dados) {
 
-		Cidade cidade = cidadeRepository.findById(dados.endereco().idCidade())
-				.orElseThrow(() -> new ValidacaoException("Id da cidade informada não existe!"));
+//		Cidade cidade = cidadeRepository.findById(dados.endereco().idCidade())
+//				.orElseThrow(() -> new ValidacaoException("Id da cidade informada não existe!"));
+//
+//		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
+//				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
 
-		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
-				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
+		Cidade cidade = getCidade.buscar(dados.endereco().idCidade());
 
-		var destino = new Destino(dados, cidade, empresa);
+		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
+
+		Destino destino = new Destino(dados, cidade, empresa);
 
 		destinoRepository.save(destino);
 
@@ -46,22 +49,30 @@ public class DestinoService {
 	public DestinoDtoDetalhar atualizarCadastro(DestinoDtoAtualizar dados, Long id) {
 
 		Cidade cidade = null;
+		
+//
+//		Empresa empresa = null;
+//
+		
+		
+		
+		
+		
+//
+//		if (dados.idEmpresa() != null) {
+//
+//			empresa = empresaRepository.findById(dados.idEmpresa())
+//					.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
+//		}
+		
+		if (dados.endereco() != null) {
 
-		Empresa empresa = null;
-
-		if (dados.endereco() != null && dados.endereco().idCidade() != null) {
-
-			cidade = cidadeRepository.findById(dados.endereco().idCidade())
-					.orElseThrow(() -> new ValidacaoException("Id da cidade informada não existe!"));
+			cidade = getCidade.buscar(dados.endereco().idCidade());
 		}
 
-		if (dados.idEmpresa() != null) {
+		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
 
-			 empresa = empresaRepository.findById(dados.idEmpresa())
-						.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-		}
-
-		var destino = destinoRepository.getReferenceById(id);
+		Destino destino = destinoRepository.getReferenceById(id);
 
 		destino.atualizarInformacoes(dados, cidade, empresa);
 

@@ -14,11 +14,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
+
 
 @Table(name = "tb_bairro")
 @Entity(name = "Bairro")
-@EqualsAndHashCode(of = "id")
 public class Bairro {
 
 	@Id

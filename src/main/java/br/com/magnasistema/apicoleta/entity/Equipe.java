@@ -15,11 +15,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
 
 @Table(name = "tb_equipe")
 @Entity(name = "Equipe")
-@EqualsAndHashCode(of = "id")
 public class Equipe {
 
 	@Id

@@ -300,7 +300,8 @@ class VeiculoControllerTest {
 	}
 
 	static Stream<Arguments> parametrosAtualizar() {
-		return Stream.of(Arguments.of(TipoVeiculo.CAMINHAO_COMPACTADOR, null, null, null, null),
+		return Stream.of(
+				Arguments.of(TipoVeiculo.CAMINHAO_COMPACTADOR, null, null, null, null),
 
 				Arguments.of(null, 50D, "123f458", 1950, 1L),
 

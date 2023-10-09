@@ -11,8 +11,8 @@ import br.com.magnasistema.apicoleta.dto.funcionario.FuncionarioDtoDetalhar;
 import br.com.magnasistema.apicoleta.entity.Empresa;
 import br.com.magnasistema.apicoleta.entity.Funcionario;
 import br.com.magnasistema.apicoleta.enums.TipoFuncao;
-import br.com.magnasistema.apicoleta.repository.EmpresaRepository;
 import br.com.magnasistema.apicoleta.repository.FuncionarioRepository;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarEmpresa;
 import br.com.magnasistema.apicoleta.validacoes.ValidacaoException;
 
 @Service
@@ -22,28 +22,26 @@ public class FuncionarioService {
 	private FuncionarioRepository funcionarioRepository;
 
 	@Autowired
-	private EmpresaRepository empresaRepository;
+	private BuscarEmpresa getEmpresa;
 
 	public FuncionarioDtoDetalhar cadastrarFuncionario(FuncionarioDtoCadastro dados) {
 
-		if (funcionarioRepository.existsByCpf(dados.cpf())) {
-			throw new ValidacaoException("Cpf já registrado!");
-		}
+		validaDuplicadas(dados);
 
-		if (funcionarioRepository.existsByEmail(dados.email())) {
-			throw new ValidacaoException("Email já registrado!");
-		}
+//		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
+//				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
+		
+		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
 
-		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
-				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-
-		var funcionario = new Funcionario(dados, empresa);
+		Funcionario funcionario = new Funcionario(dados, empresa);
 
 		funcionarioRepository.save(funcionario);
 
 		return new FuncionarioDtoDetalhar(funcionario);
 
 	}
+
+
 
 	public Page<FuncionarioDtoDetalhar> listarFuncionarios(Pageable paginacao, TipoFuncao funcao) {
 
@@ -78,24 +76,20 @@ public class FuncionarioService {
 	public FuncionarioDtoDetalhar atualizarCadastro(FuncionarioDtoAtualizar dados, Long id) {
 		
 		
-		if (dados.cpf() !=null && funcionarioRepository.existsByCpf(dados.cpf())) {
-			throw new ValidacaoException("Cpf já registrado!");
-		}
-
-		if (dados.email() !=null && funcionarioRepository.existsByEmail(dados.email())) {
-			throw new ValidacaoException("Email já registrado!");
-		}
+		validaDuplicadas(dados);
 		
-		Empresa empresa = null;
+//		Empresa empresa = null;
+//
+//		if (dados.idEmpresa() != null) {
+// 
+//			empresa = empresaRepository.findById(dados.idEmpresa())
+//					.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
+//
+//		}
+		
+		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
 
-		if (dados.idEmpresa() != null) {
- 
-			empresa = empresaRepository.findById(dados.idEmpresa())
-					.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-
-		}
-
-		var funcionario = funcionarioRepository.getReferenceById(id);
+		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
 
 		funcionario.atualizarInformacoes(dados, empresa);
 
@@ -104,10 +98,35 @@ public class FuncionarioService {
 		return new FuncionarioDtoDetalhar(funcionario);
 	}
 
+
+
+	
+
 	public void deletaCadastro(Long id) {
 
 		funcionarioRepository.deleteById(id);
 
+	}
+	
+	private void validaDuplicadas(FuncionarioDtoCadastro dados) {
+		if (funcionarioRepository.existsByCpf(dados.cpf())) {
+			throw new ValidacaoException("Cpf já registrado!");
+		}
+
+		if (funcionarioRepository.existsByEmail(dados.email())) {
+			throw new ValidacaoException("Email já registrado!");
+		}
+	}
+	
+	private void validaDuplicadas(FuncionarioDtoAtualizar dados) {
+		
+		if (funcionarioRepository.existsByCpf(dados.cpf())) {
+			throw new ValidacaoException("Cpf já registrado!");
+		}
+
+		if (funcionarioRepository.existsByEmail(dados.email())) {
+			throw new ValidacaoException("Email já registrado!");
+		}
 	}
 
 }

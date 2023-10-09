@@ -13,11 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
 
 @Table(name = "tb_destino")
 @Entity(name = "Destino")
-@EqualsAndHashCode(of = "id")
 public class Destino {
 
 	public Destino(String nome, TipoDestino tipoLocal, Double capacidadeSuportada, Endereco endereco, Empresa empresa) {

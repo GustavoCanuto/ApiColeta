@@ -22,11 +22,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
 
 @Table(name = "tb_funcionario")
 @Entity(name = "Funcionario")
-@EqualsAndHashCode(of = "id")
 public class Funcionario {
 
 	@Id

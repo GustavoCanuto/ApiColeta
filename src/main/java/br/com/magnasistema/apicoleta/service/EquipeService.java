@@ -11,8 +11,7 @@ import br.com.magnasistema.apicoleta.dto.equipe.EquipeDtoDetalharComFuncionarios
 import br.com.magnasistema.apicoleta.entity.Equipe;
 import br.com.magnasistema.apicoleta.entity.Veiculo;
 import br.com.magnasistema.apicoleta.repository.EquipeRepository;
-import br.com.magnasistema.apicoleta.repository.VeiculoRepository;
-import br.com.magnasistema.apicoleta.validacoes.ValidacaoException;
+import br.com.magnasistema.apicoleta.service.buscador.BuscarVeiculo;
 
 @Service
 public class EquipeService {
@@ -21,14 +20,16 @@ public class EquipeService {
 	private EquipeRepository equipeRepository;
 
 	@Autowired
-	private VeiculoRepository veiculoRepository;
+	private BuscarVeiculo getVeiculo;
 
 	public EquipeDtoDetalharComFuncionarios cadastrarEquipe(EquipeDtoCadastro dados) {
 
-		Veiculo veiculo = veiculoRepository.findById(dados.idVeiculo())
-				.orElseThrow(() -> new ValidacaoException("Id do veiculo informada não existe!"));
+//		Veiculo veiculo = veiculoRepository.findById(dados.idVeiculo())
+//				.orElseThrow(() -> new ValidacaoException("Id do veiculo informada não existe!"));
+		
+		Veiculo veiculo = getVeiculo.buscar(dados.idVeiculo());
 
-		var equipe = new Equipe(dados, veiculo);
+		Equipe equipe = new Equipe(dados, veiculo);
 
 		equipeRepository.save(equipe);
 
@@ -48,15 +49,17 @@ public class EquipeService {
 
 	public EquipeDtoDetalharComFuncionarios atualizarEquipe(EquipeDtoCadastro dados, Long id) {
 
-		Veiculo veiculo = null;
+//		Veiculo veiculo = null;
+//
+//		if (dados.idVeiculo() != null) {
+//
+//			veiculo = veiculoRepository.findById(dados.idVeiculo())
+//					.orElseThrow(() -> new ValidacaoException("Id do veiculo informada não existe!"));
+//		}
 
-		if (dados.idVeiculo() != null) {
-
-			veiculo = veiculoRepository.findById(dados.idVeiculo())
-					.orElseThrow(() -> new ValidacaoException("Id do veiculo informada não existe!"));
-		}
-
-		var equipe = equipeRepository.getReferenceById(id);
+		Veiculo veiculo = getVeiculo.buscar(dados.idVeiculo());
+		
+		Equipe equipe = equipeRepository.getReferenceById(id);
 
 		equipe.atualizarInformacoes(dados, veiculo);
 

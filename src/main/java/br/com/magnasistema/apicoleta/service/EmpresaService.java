@@ -20,21 +20,17 @@ public class EmpresaService {
 
 	public EmpresaDtoDetalhar cadastrarEmpresa(EmpresaDtoCadastrar dados) {
 
-		if (empresaRepository.existsByCnpj(dados.cnpj())) {
-			throw new ValidacaoException("CNPJ já registrado!");
-		}
+		validaDuplicadas(dados); 
 
-		if (empresaRepository.existsByEmail(dados.email())) {
-			throw new ValidacaoException("Email já registrado!");
-		}
-
-		var empresa = new Empresa(dados);
+		Empresa empresa = new Empresa(dados);
 
 		empresaRepository.save(empresa);
 
 		return new EmpresaDtoDetalhar(empresa);
 
 	}
+
+
 
 	public Page<EmpresaDtoDetalhar> listarEmpresas(Pageable paginacao, String nome) {
 
@@ -54,13 +50,9 @@ public class EmpresaService {
 
 	public EmpresaDtoDetalhar atualizarCadastro(EmpresaDtoAtualizar dados, long id) {
 
-		if (dados.cnpj() != null && empresaRepository.existsByCnpj(dados.cnpj())) {
-			throw new ValidacaoException("CNPJ já registrado!");
-		}
-
-		if (dados.email() != null && empresaRepository.existsByEmail(dados.email())) {
-			throw new ValidacaoException("Email já registrado!");
-		}
+		
+		
+		validaDuplicadas(dados);
 
 		var empresa = empresaRepository.getReferenceById(id);
 
@@ -72,10 +64,33 @@ public class EmpresaService {
 
 	}
 
+
 	public void deletaCadastro(Long id) {
 
 		empresaRepository.deleteById(id);
 
+	}
+	
+	private void validaDuplicadas(EmpresaDtoAtualizar dados) {
+		if (empresaRepository.existsByCnpj(dados.cnpj())) {
+			throw new ValidacaoException("CNPJ já registrado!");
+		}
+
+		if (empresaRepository.existsByEmail(dados.email())) {
+			throw new ValidacaoException("Email já registrado!");
+		}
+	}
+
+
+	
+	private void validaDuplicadas(EmpresaDtoCadastrar dados) {
+		if (empresaRepository.existsByCnpj(dados.cnpj())) {
+			throw new ValidacaoException("CNPJ já registrado!");
+		}
+
+		if (empresaRepository.existsByEmail(dados.email())) {
+			throw new ValidacaoException("Email já registrado!");
+		}
 	}
 
 }

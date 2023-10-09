@@ -176,6 +176,22 @@ class EmpresaControllerTest {
 		assertThat(responseEntity.getBody()).contains(mensagemDeErro);
 
 	}
+	
+	@Test
+	@DisplayName("Deveria cadastrar uma empresa com informações válidas")
+	void testeTratadorErro400() {
+
+		EmpresaDtoCadastrar requestBody = new EmpresaDtoCadastrar("empresa teste2", "012345", "40028",
+				"g7", TipoEmpresa.PUBLICA);
+
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody,
+				String.class);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(responseEntity.getBody()).isNotNull();
+		//assertThat(responseEntity.getBody().nome()).isEqualTo("empresa teste2");
+
+	}
 
 	@Test
 	@DisplayName("Deveria excluir uma Empresa por ID")
