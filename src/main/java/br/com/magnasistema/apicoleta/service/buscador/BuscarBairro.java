@@ -8,27 +8,19 @@ import br.com.magnasistema.apicoleta.repository.BairroRepository;
 import br.com.magnasistema.apicoleta.validacoes.ValidacaoException;
 
 @Component
-public class BuscarBairro implements BuscarEntidade<Bairro>{
+public class BuscarBairro implements BuscarEntidade<Bairro> {
 
 	@Autowired
 	BairroRepository bairroRepository;
-	
+
 	Bairro bairro;
-	
+
 	public Bairro buscar(Long id) {
 
-		if (id != null) {
-
-			bairro = bairroRepository.findById(id)
-					.orElseThrow(() -> new ValidacaoException("Id do Bairro não encontrado"));
-		}
+		bairro = bairroRepository.findById(id)
+				.orElseThrow(() -> new ValidacaoException("Id do Bairro não encontrado"));
 
 		return bairro;
 	}
 
-
-	
-	
-	
-	
 }

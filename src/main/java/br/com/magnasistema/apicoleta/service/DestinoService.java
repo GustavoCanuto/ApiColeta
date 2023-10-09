@@ -29,12 +29,6 @@ public class DestinoService {
 
 	public DestinoDtoDetalhar cadastrarDestino(DestinoDtoCadastro dados) {
 
-//		Cidade cidade = cidadeRepository.findById(dados.endereco().idCidade())
-//				.orElseThrow(() -> new ValidacaoException("Id da cidade informada não existe!"));
-//
-//		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
-//				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-
 		Cidade cidade = getCidade.buscar(dados.endereco().idCidade());
 
 		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
@@ -46,25 +40,21 @@ public class DestinoService {
 		return new DestinoDtoDetalhar(destino);
 	}
 
+	public Page<DestinoDtoDetalhar> listarDestinos(Pageable paginacao) {
+
+		return destinoRepository.findAll(paginacao).map(DestinoDtoDetalhar::new);
+
+	}
+
+	public DestinoDtoDetalhar detalharDestino(Long id) {
+
+		return new DestinoDtoDetalhar(destinoRepository.getReferenceById(id));
+	}
+
 	public DestinoDtoDetalhar atualizarCadastro(DestinoDtoAtualizar dados, Long id) {
 
 		Cidade cidade = null;
-		
-//
-//		Empresa empresa = null;
-//
-		
-		
-		
-		
-		
-//
-//		if (dados.idEmpresa() != null) {
-//
-//			empresa = empresaRepository.findById(dados.idEmpresa())
-//					.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-//		}
-		
+
 		if (dados.endereco() != null) {
 
 			cidade = getCidade.buscar(dados.endereco().idCidade());
@@ -80,17 +70,6 @@ public class DestinoService {
 
 		return new DestinoDtoDetalhar(destino);
 
-	}
-
-	public Page<DestinoDtoDetalhar> listarDestinos(Pageable paginacao) {
-
-		return destinoRepository.findAll(paginacao).map(DestinoDtoDetalhar::new);
-
-	}
-
-	public DestinoDtoDetalhar detalharDestino(Long id) {
-
-		return new DestinoDtoDetalhar(destinoRepository.getReferenceById(id));
 	}
 
 	public void deletaCadastro(Long id) {

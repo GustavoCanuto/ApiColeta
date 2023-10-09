@@ -34,12 +34,6 @@ public class FuncionarioEquipeService {
 
 	public FuncionarioEquipeDtoDetalhar cadastrarFuncionarioEquipe(FuncionarioEquipeDtoCadastro dados) {
 
-//		var equipe = equipeRepository.findById(dados.idEquipe())
-//				.orElseThrow(() -> new ValidacaoException("Id da Equipe não encontrado"));
-//
-//		var funcionario = funcionarioRepository.findById(dados.idFuncionario())
-//				.orElseThrow(() -> new ValidacaoException("Id do Funcionario não encontrado")); 
-
 		Equipe equipe = getEquipe.buscar(dados.idEquipe());
 		
 		Funcionario funcionario = getFuncionario.buscar(dados.idFuncionario());

@@ -42,14 +42,6 @@ public class EquipeController {
 
 	}
 
-	@PutMapping("/{id}")
-	@Transactional
-	public ResponseEntity<EquipeDtoDetalharComFuncionarios> atualizar(@PathVariable Long id, @RequestBody EquipeDtoCadastro dados) {
-
-		return ResponseEntity.ok(equipeService.atualizarEquipe(dados, id));
-
-	}
-	
 	@GetMapping
 	public ResponseEntity<Page<EquipeDtoDetalhar>> listar(@PageableDefault(size = 10) Pageable paginacao) {
 
@@ -64,6 +56,14 @@ public class EquipeController {
 
 	}
 
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<EquipeDtoDetalharComFuncionarios> atualizar(@PathVariable Long id, @RequestBody EquipeDtoCadastro dados) {
+
+		return ResponseEntity.ok(equipeService.atualizarEquipe(dados, id));
+
+	}
+	
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Void> excluir(@PathVariable Long id) {

@@ -30,11 +30,6 @@ public class TratadorDeErros {
 
 	}
 
-//	@ExceptionHandler(HttpMessageNotReadableException.class)
-//	public ResponseEntity<String> tratarErro400(HttpMessageNotReadableException ex) {
-//		return ResponseEntity.badRequest().body(ex.getMessage());
-//	}
-
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> tratarErro500(Exception ex) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " + ex.getLocalizedMessage());

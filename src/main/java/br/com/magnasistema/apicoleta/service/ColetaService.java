@@ -48,39 +48,15 @@ public class ColetaService {
 
 		validarDados(dados);
 
-//		var equipe = equipeRepository.findById(dados.idEquipe())
-//				.orElseThrow(() -> new ValidacaoException("Id da Equipe não encontrado"));
-//
-//		var bairro = bairroRepository.findById(dados.idBairro())
-//				.orElseThrow(() -> new ValidacaoException("Id do Bairro não encontrado"));
-//
-//		var destino = destinoRepository.findById(dados.idDestino())
-//				.orElseThrow(() -> new ValidacaoException("Id do Destino não encontrado"));
-
-		
 		Bairro bairro = getBairro.buscar(dados.idBairro());
-		
+
 		Equipe equipe = getEquipe.buscar(dados.idEquipe());
-		
+
 		Destino destino = getDestino.buscar(dados.idDestino());
-		
-		
+
 		validadoresCadastro.forEach(v -> v.validar(dados));
 
 		var coleta = new Coleta(dados, equipe, bairro, destino);
-
-		coletaRepository.save(coleta);
- 
-		return new ColetaDtoDetalhar(coleta);
-	}
-
-	public ColetaDtoDetalhar atualizarCadastro(ColetaDtoAtualizar dados, Long id) {
-
-		validadoresAtualizacao.forEach(v -> v.validar(dados, id));
-
-		var coleta = coletaRepository.getReferenceById(id);
-
-		coleta.atualizarInformacoes(dados);
 
 		coletaRepository.save(coleta);
 
@@ -98,31 +74,29 @@ public class ColetaService {
 		return new ColetaDtoDetalhar(coletaRepository.getReferenceById(id));
 	}
 
-	public void deletaCadastro(Long id) {
-
-		coletaRepository.deleteById(id);
-
-	}
-
 	public Page<ColetaDtoDetalhar> listarColetaPorEquipe(Pageable paginacao, Long id) {
 
 		return coletaRepository.findByEquipeIdOrderByIdDesc(id, paginacao).map(ColetaDtoDetalhar::new);
 
 	}
 
+	public ColetaDtoDetalhar atualizarCadastro(ColetaDtoAtualizar dados, Long id) {
+
+		validadoresAtualizacao.forEach(v -> v.validar(dados, id));
+
+		var coleta = coletaRepository.getReferenceById(id);
+
+		coleta.atualizarInformacoes(dados);
+
+		coletaRepository.save(coleta);
+
+		return new ColetaDtoDetalhar(coleta);
+	}
+
 	public ColetaDtoDetalhar modificarColeta(ColetaDtoModificar dados, Long id) {
 
-//		Destino destino = null;
-//
-//		if (dados.idDestino() != null) {
-//
-//			destino = destinoRepository.findById(dados.idDestino())
-//					.orElseThrow(() -> new ValidacaoException("Id do Destino não encontrado"));
-//
-//		}
-		
 		Destino destino = getDestino.buscar(dados.idDestino());
-		
+
 		Coleta coleta = coletaRepository.getReferenceById(id);
 
 		coleta.modificarInformacoes(dados, destino);
@@ -130,6 +104,12 @@ public class ColetaService {
 		coletaRepository.save(coleta);
 
 		return new ColetaDtoDetalhar(coleta);
+	}
+
+	public void deletaCadastro(Long id) {
+
+		coletaRepository.deleteById(id);
+
 	}
 
 	private void validarDados(ColetaDtoCadastro dados) {

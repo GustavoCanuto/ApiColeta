@@ -23,9 +23,6 @@ public class EquipeService {
 	private BuscarVeiculo getVeiculo;
 
 	public EquipeDtoDetalharComFuncionarios cadastrarEquipe(EquipeDtoCadastro dados) {
-
-//		Veiculo veiculo = veiculoRepository.findById(dados.idVeiculo())
-//				.orElseThrow(() -> new ValidacaoException("Id do veiculo informada não existe!"));
 		
 		Veiculo veiculo = getVeiculo.buscar(dados.idVeiculo());
 
@@ -49,13 +46,6 @@ public class EquipeService {
 
 	public EquipeDtoDetalharComFuncionarios atualizarEquipe(EquipeDtoCadastro dados, Long id) {
 
-//		Veiculo veiculo = null;
-//
-//		if (dados.idVeiculo() != null) {
-//
-//			veiculo = veiculoRepository.findById(dados.idVeiculo())
-//					.orElseThrow(() -> new ValidacaoException("Id do veiculo informada não existe!"));
-//		}
 
 		Veiculo veiculo = getVeiculo.buscar(dados.idVeiculo());
 		

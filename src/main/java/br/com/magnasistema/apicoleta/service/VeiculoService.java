@@ -28,9 +28,6 @@ public class VeiculoService {
 
 		validaDuplicadas(dados);
 
-//		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
-//				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-
 		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
 
 		Veiculo veiculo = new Veiculo(dados, empresa);
@@ -85,18 +82,15 @@ public class VeiculoService {
 		return veiculoRepository.findByEmpresaId(idEmpresa, paginacao).map(VeiculoDtoDetalhar::new);
 	}
 
+	public VeiculoDtoDetalhar detalharVeiculo(Long id) {
+
+		return new VeiculoDtoDetalhar(veiculoRepository.getReferenceById(id));
+
+	}
+
 	public VeiculoDtoDetalhar atualizarCadastro(VeiculoDtoAtualizar dados, long id) {
 
 		validaDuplicadas(dados);
-
-//		Empresa empresa = null;
-//
-//		if (dados.idEmpresa() != null) {
-//
-//			empresa = empresaRepository.findById(dados.idEmpresa())
-//					.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-//
-//		}
 
 		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
 
@@ -107,12 +101,6 @@ public class VeiculoService {
 		veiculoRepository.save(veiculo);
 
 		return new VeiculoDtoDetalhar(veiculo);
-	}
-
-	public VeiculoDtoDetalhar detalharVeiculo(Long id) {
-
-		return new VeiculoDtoDetalhar(veiculoRepository.getReferenceById(id));
-
 	}
 
 	public void deletaCadastro(Long id) {

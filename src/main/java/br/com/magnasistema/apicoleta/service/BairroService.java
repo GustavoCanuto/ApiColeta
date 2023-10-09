@@ -24,9 +24,6 @@ public class BairroService {
 	public BairroDtoDetalhar cadastrarBairro(BairroDtoCadastro dados) {
 
 		 Cidade cidade = getCidade.buscar(dados.idCidade());
-		
-//		Cidade cidade = cidadeRepository.findById(dados.idCidade())
-//				.orElseThrow(() -> new ValidacaoException("Id da cidade informada não existe!"));
 
 		Bairro bairro = new Bairro(dados, cidade); 
 
@@ -70,14 +67,6 @@ public class BairroService {
 	public BairroDtoDetalhar atualizarCadastro(BairroDtoCadastro dados, long id) {
 
 		Cidade cidade = getCidade.buscar(dados.idCidade());
-		
-//		Cidade cidade = null;
-//		
-//		if (dados.idCidade() != null) {
-//
-//			cidade = cidadeRepository.findById(dados.idCidade())
-//					.orElseThrow(() -> new ValidacaoException("Id da cidade informada não existe!"));
-//		}
 
 		Bairro bairro = bairroRepository.getReferenceById(id);
 

@@ -28,9 +28,6 @@ public class FuncionarioService {
 
 		validaDuplicadas(dados);
 
-//		Empresa empresa = empresaRepository.findById(dados.idEmpresa())
-//				.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-		
 		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
 
 		Funcionario funcionario = new Funcionario(dados, empresa);
@@ -77,15 +74,6 @@ public class FuncionarioService {
 		
 		
 		validaDuplicadas(dados);
-		
-//		Empresa empresa = null;
-//
-//		if (dados.idEmpresa() != null) {
-// 
-//			empresa = empresaRepository.findById(dados.idEmpresa())
-//					.orElseThrow(() -> new ValidacaoException("Id da empresa informada não existe!"));
-//
-//		}
 		
 		Empresa empresa = getEmpresa.buscar(dados.idEmpresa());
 
