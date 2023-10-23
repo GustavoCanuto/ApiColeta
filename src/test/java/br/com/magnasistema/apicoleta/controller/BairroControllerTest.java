@@ -48,8 +48,8 @@ class BairroControllerTest {
 	@Autowired
 	private BairroRepository bairroRepository;
 
-	private final String uriPrincipal = "/bairro";
-	private final String uriPesquisaCidade = "/bairro/cidade";
+	private final String URI_PRINCIPAL = "/bairro";
+	private final String URI_PESQUISA_CIDADE = "/bairro/cidade";
 
 	@BeforeEach
 	void inicializar() {
@@ -74,7 +74,7 @@ class BairroControllerTest {
 
 		BairroDtoCadastro requestBody = new BairroDtoCadastro(1L, "Nome do Bairro", "Logradouro válido");
 
-		ResponseEntity<BairroDtoDetalhar> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody,
+		ResponseEntity<BairroDtoDetalhar> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody,
 				BairroDtoDetalhar.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -90,7 +90,7 @@ class BairroControllerTest {
 
 		BairroDtoCadastro requestBody = new BairroDtoCadastro(15L, "Nome do Bairro", "Logradouro válido");
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isEqualTo("Id da cidade informada não existe!");
@@ -102,7 +102,7 @@ class BairroControllerTest {
 	void detalharBairroPorId() {
 		Long idDoBairroExistente = 1L;
 
-		ResponseEntity<BairroDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.GET,
+		ResponseEntity<BairroDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.GET,
 				null, BairroDtoDetalhar.class, idDoBairroExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -119,7 +119,7 @@ class BairroControllerTest {
 
 		BairroDtoCadastro requestBody = new BairroDtoCadastro(id, nome, logradouros);
 
-		ResponseEntity<BairroDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<BairroDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), BairroDtoDetalhar.class, idDoBairroExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -135,7 +135,7 @@ class BairroControllerTest {
 
 		BairroDtoCadastro requestBody = new BairroDtoCadastro(15L, "", "Novo Logradouro 4");
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), String.class, idDoBairroExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -147,7 +147,7 @@ class BairroControllerTest {
 	@DisplayName("Deveria listar bairros ")
 	void listarBairrosCenario1() {
 
-		ResponseEntity<PageResponse<BairroDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal,
+		ResponseEntity<PageResponse<BairroDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<BairroDtoDetalhar>>() {
 				});
 
@@ -167,7 +167,7 @@ class BairroControllerTest {
 	void listarBairrosCenario2(String nome) {
 
 		ResponseEntity<PageResponse<BairroDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPrincipal + "?nome=" + nome, HttpMethod.GET, null,
+				URI_PRINCIPAL + "?nome=" + nome, HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<BairroDtoDetalhar>>() {
 				});
 
@@ -188,7 +188,7 @@ class BairroControllerTest {
 		Long idCidadeExistente = 1L;
 
 		ResponseEntity<PageResponse<BairroDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPesquisaCidade + "/{id}", HttpMethod.GET, null,
+				URI_PESQUISA_CIDADE + "/{id}", HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<BairroDtoDetalhar>>() {
 				}, idCidadeExistente);
 
@@ -209,7 +209,7 @@ class BairroControllerTest {
 		Long idCidadeExistente = 1L;
 
 		ResponseEntity<PageResponse<BairroDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPesquisaCidade + "/{id}?nome=" + nome, HttpMethod.GET, null,
+				URI_PESQUISA_CIDADE + "/{id}?nome=" + nome, HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<BairroDtoDetalhar>>() {
 				}, idCidadeExistente);
 
@@ -228,7 +228,7 @@ class BairroControllerTest {
 	void excluirBairroPorId() {
 		Long idDoBairroExistente = 1L;
 
-		ResponseEntity<Void> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.DELETE, null,
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.DELETE, null,
 				Void.class, idDoBairroExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);

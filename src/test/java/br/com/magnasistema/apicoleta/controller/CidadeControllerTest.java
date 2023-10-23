@@ -37,8 +37,8 @@ class CidadeControllerTest {
 	@Autowired
 	private CidadeRepository cidadeRepository;
 
-	private final String uriPrincipal = "/cidade";
-	private final String uriPesquisaEstado = "/cidade/estado";
+	private final String URI_PRINCIPAL = "/cidade";
+	private final String URI_PESQUISA_ESTADO = "/cidade/estado";
 
 	@BeforeEach
 	void inicializar() {
@@ -62,7 +62,7 @@ class CidadeControllerTest {
 	@DisplayName("Deveria listar cidades")
 	void listarCidadesCenario1() {
 
-		ResponseEntity<PageResponse<CidadeDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal,
+		ResponseEntity<PageResponse<CidadeDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<CidadeDtoDetalhar>>() {
 				});
 
@@ -82,7 +82,7 @@ class CidadeControllerTest {
 	@DisplayName("Deveria listar cidades com diferentes valores de nome")
 	void listarCidadesCenario2(String nome) {
 
-		ResponseEntity<PageResponse<CidadeDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal+ "?nome=" + nome,
+		ResponseEntity<PageResponse<CidadeDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL+ "?nome=" + nome,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<CidadeDtoDetalhar>>() {
 				});
 
@@ -101,7 +101,7 @@ class CidadeControllerTest {
 	void listarCidadesPorEstadoCenario1() {
 		Long idEstadoExistente = 1L;
 
-		ResponseEntity<PageResponse<CidadeDtoDetalhar>> responseEntity = restTemplate.exchange(uriPesquisaEstado +"/{id}",
+		ResponseEntity<PageResponse<CidadeDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PESQUISA_ESTADO +"/{id}",
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<CidadeDtoDetalhar>>() {
 				}, idEstadoExistente);
 
@@ -123,7 +123,7 @@ class CidadeControllerTest {
 		Long idEstadoExistente = 1L;
 
 		ResponseEntity<PageResponse<CidadeDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPesquisaEstado + "/{id}?nome=" + nome, HttpMethod.GET, null,
+				URI_PESQUISA_ESTADO + "/{id}?nome=" + nome, HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<CidadeDtoDetalhar>>() {
 				}, idEstadoExistente);
 
@@ -142,7 +142,7 @@ class CidadeControllerTest {
 	void detalharCidadePorId() {
 		Long idDoCidadeExistente = 1L;
 
-		ResponseEntity<CidadeDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal+"/{id}", HttpMethod.GET, null,
+		ResponseEntity<CidadeDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL+"/{id}", HttpMethod.GET, null,
 				CidadeDtoDetalhar.class, idDoCidadeExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

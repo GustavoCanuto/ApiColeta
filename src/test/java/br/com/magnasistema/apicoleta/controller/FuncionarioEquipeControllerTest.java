@@ -63,7 +63,7 @@ class FuncionarioEquipeControllerTest {
 	@Autowired
 	private VeiculoRepository veiculoRepository;
 
-	private final String uriPrincipal = "/funcionarioequipe";
+	private final String URI_PRINCIPAL = "/funcionarioequipe";
 
 	private Equipe equipeTesteGoblal;
 	private Empresa empresaTesteGoblal;
@@ -99,7 +99,7 @@ class FuncionarioEquipeControllerTest {
 
 		FuncionarioEquipeDtoCadastro requestBody = new FuncionarioEquipeDtoCadastro(1L, 1L);
 
-		ResponseEntity<FuncionarioEquipeDtoDetalhar> responseEntity = restTemplate.postForEntity(uriPrincipal,
+		ResponseEntity<FuncionarioEquipeDtoDetalhar> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL,
 				requestBody, FuncionarioEquipeDtoDetalhar.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -116,7 +116,7 @@ class FuncionarioEquipeControllerTest {
 
 		FuncionarioEquipeDtoCadastro requestBody = new FuncionarioEquipeDtoCadastro(1L, 1L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, new HttpEntity<>(requestBody),
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, new HttpEntity<>(requestBody),
 				String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -136,7 +136,7 @@ class FuncionarioEquipeControllerTest {
 
 		FuncionarioEquipeDtoCadastro requestBody = new FuncionarioEquipeDtoCadastro(5L, 1L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -153,7 +153,7 @@ class FuncionarioEquipeControllerTest {
 		
 		FuncionarioEquipeDtoCadastro requestBody = new FuncionarioEquipeDtoCadastro(idFuncionario, idEquipe);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -169,7 +169,7 @@ class FuncionarioEquipeControllerTest {
 
 		FuncionarioEquipeDtoCadastro requestBody = new FuncionarioEquipeDtoCadastro(5L, 1L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -184,7 +184,7 @@ class FuncionarioEquipeControllerTest {
 
 		Long idFuncionarioEquipeExistente = 1L;
 
-		ResponseEntity<Void> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.DELETE, null,
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.DELETE, null,
 				Void.class, idFuncionarioEquipeExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT); 
@@ -201,7 +201,7 @@ class FuncionarioEquipeControllerTest {
 		Long idFuncionarioExistente = funcionario.getId(); 
 
 		ResponseEntity<FuncionarioDtoListagemEquipes> responseEntity = restTemplate.exchange(
-				uriPrincipal + "/funcionario/{id}", HttpMethod.GET, null, FuncionarioDtoListagemEquipes.class,
+				URI_PRINCIPAL + "/funcionario/{id}", HttpMethod.GET, null, FuncionarioDtoListagemEquipes.class,
 				idFuncionarioExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

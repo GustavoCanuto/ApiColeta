@@ -40,7 +40,7 @@ class EmpresaControllerTest {
 	@Autowired
 	private EmpresaRepository empresaRepository;
 
-	private final String uriPrincipal = "/empresa";
+	private final String URI_PRINCIPAL = "/empresa";
 
 	@BeforeEach
 	void inicializar() {
@@ -66,7 +66,7 @@ class EmpresaControllerTest {
 		EmpresaDtoCadastrar requestBody = new EmpresaDtoCadastrar("empresa teste2", "012345678912346", "400289227",
 				"g7@hotmail.com", TipoEmpresa.PUBLICA);
 
-		ResponseEntity<EmpresaDtoDetalhar> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody,
+		ResponseEntity<EmpresaDtoDetalhar> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody,
 				EmpresaDtoDetalhar.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -94,7 +94,7 @@ class EmpresaControllerTest {
 	@DisplayName("Deveria listar empresas ")
 	void listarEmpresasCenario1() {
 
-		ResponseEntity<PageResponse<EmpresaDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal,
+		ResponseEntity<PageResponse<EmpresaDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<EmpresaDtoDetalhar>>() {
 				});
 
@@ -114,7 +114,7 @@ class EmpresaControllerTest {
 	void listarEmpresasCenario2(String nome) {
 
 		ResponseEntity<PageResponse<EmpresaDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPrincipal + "?nome=" + nome, HttpMethod.GET, null,
+				URI_PRINCIPAL + "?nome=" + nome, HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<EmpresaDtoDetalhar>>() {
 				});
 
@@ -133,7 +133,7 @@ class EmpresaControllerTest {
 	void detalharEmpresaPorId() {
 		Long idDoEmpresaExistente = 1L;
 
-		ResponseEntity<EmpresaDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal+"/{id}", HttpMethod.GET, null,
+		ResponseEntity<EmpresaDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL+"/{id}", HttpMethod.GET, null,
 				EmpresaDtoDetalhar.class, idDoEmpresaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -150,7 +150,7 @@ class EmpresaControllerTest {
 
 		EmpresaDtoAtualizar requestBody = new EmpresaDtoAtualizar(nome, cnpj, telefone, email, tipo);
 
-		ResponseEntity<EmpresaDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal+"/{id}", HttpMethod.PUT,
+		ResponseEntity<EmpresaDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL+"/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), EmpresaDtoDetalhar.class, idDoEmpresaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -168,7 +168,7 @@ class EmpresaControllerTest {
 
 		EmpresaDtoAtualizar requestBody = new EmpresaDtoAtualizar(nome, cnpj, telefone, email, tipo);
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), String.class, idDoEmpresaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -184,7 +184,7 @@ class EmpresaControllerTest {
 		EmpresaDtoCadastrar requestBody = new EmpresaDtoCadastrar("empresa teste2", "012345", "40028",
 				"g7", TipoEmpresa.PUBLICA);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody,
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody,
 				String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -198,7 +198,7 @@ class EmpresaControllerTest {
 	void excluirEmpresaPorId() {
 		Long idEmpresaExistente = 1L;
 
-		ResponseEntity<Void> responseEntity = restTemplate.exchange(uriPrincipal+"/{id}", HttpMethod.DELETE, null,
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(URI_PRINCIPAL+"/{id}", HttpMethod.DELETE, null,
 				Void.class, idEmpresaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);

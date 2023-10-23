@@ -95,13 +95,14 @@ class ColetaControllerTest {
 	@Autowired
 	private ColetaRepository coletaRepository;
 
-	private final String uriPrincipal = "/coleta";
+	private final String URI_PRINCIPAL = "/coleta";
 
-	private final String uriPesquisaEquipe = "/coleta/equipe";
+	private final String URI_PESQUISA_EQUIPE = "/coleta/equipe";
 
-	private final String uriModificar = "/coleta/modificar";
+	private final String URI_MODIFICAR = "/coleta/modificar";
 
 	private Cidade cidadeTesteGoblal;
+	
 	private Empresa empresaTesteGoblal;
 
 	@BeforeEach
@@ -142,7 +143,7 @@ class ColetaControllerTest {
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(LocalDateTime.of(2023, 10, 2, 15, 30), null, null,
 				idEquipe, idBairro, idDestino);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -160,7 +161,7 @@ class ColetaControllerTest {
 
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(timestampInicial, timestampFinal, peso, 1L, 1L, 1L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -177,7 +178,7 @@ class ColetaControllerTest {
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(LocalDateTime.of(2023, 10, 2, 18, 30),
 				LocalDateTime.of(2023, 10, 2, 19, 30), 50D, 1L, 1L, 1L);
 
-		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody,
+		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody,
 				ColetaDtoDetalhar.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -195,7 +196,7 @@ class ColetaControllerTest {
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(LocalDateTime.of(2023, 10, 2, 18, 30), null, null, 1L, 1L,
 				1L);
 
-		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody,
+		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody,
 				ColetaDtoDetalhar.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -213,7 +214,7 @@ class ColetaControllerTest {
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(LocalDateTime.of(2023, 10, 2, 18, 30), null, null, 1L, 1L,
 				2L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -231,7 +232,7 @@ class ColetaControllerTest {
 
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(timestampInicial, timestampFinal, 50D, 1L, 1L, 1L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -248,7 +249,7 @@ class ColetaControllerTest {
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(LocalDateTime.of(2023, 10, 2, 18, 30),
 				LocalDateTime.of(2023, 10, 2, 19, 30), 800D, 1L, 1L, 1L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -267,7 +268,7 @@ class ColetaControllerTest {
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(LocalDateTime.of(2023, 10, 2, 18, 30), null, null, 1L, 1L,
 				2L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -288,7 +289,7 @@ class ColetaControllerTest {
 		ColetaDtoCadastro requestBody = new ColetaDtoCadastro(LocalDateTime.of(2023, 10, 2, 18, 30),
 				LocalDateTime.of(2023, 10, 2, 19, 30), 800D, 1L, 1L, 1L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).isNotNull();
@@ -307,7 +308,7 @@ class ColetaControllerTest {
 
 		ColetaDtoAtualizar requestBody = new ColetaDtoAtualizar(timeStampFinal, peso);
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), String.class, idDoColetaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -326,7 +327,7 @@ class ColetaControllerTest {
 
 		ColetaDtoAtualizar requestBody = new ColetaDtoAtualizar(LocalDateTime.of(2023, 10, 2, 17, 30), 40D);
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), String.class, idDoColetaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -345,7 +346,7 @@ class ColetaControllerTest {
 
 		ColetaDtoAtualizar requestBody = new ColetaDtoAtualizar(LocalDateTime.of(2023, 10, 2, 16, 30), 50D);
 
-		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), ColetaDtoDetalhar.class, idDoColetaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -365,7 +366,7 @@ class ColetaControllerTest {
 
 		ColetaDtoModificar requestBody = new ColetaDtoModificar(peso, idDestino);
 
-		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.exchange(uriModificar + "/{id}", HttpMethod.PUT,
+		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.exchange(URI_MODIFICAR + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), ColetaDtoDetalhar.class, idDoColetaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -384,7 +385,7 @@ class ColetaControllerTest {
 
 		ColetaDtoModificar requestBody = new ColetaDtoModificar(10D, 15L);
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriModificar + "/{id}", HttpMethod.PUT,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_MODIFICAR + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), String.class, idDoColetaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -401,7 +402,7 @@ class ColetaControllerTest {
 
 		Long idEquipeExistente = 1L;
 
-		ResponseEntity<PageResponse<ColetaDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal,
+		ResponseEntity<PageResponse<ColetaDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<ColetaDtoDetalhar>>() {
 				}, idEquipeExistente);
 
@@ -425,7 +426,7 @@ class ColetaControllerTest {
 
 		Long idEquipeExistente = 1L;
 
-		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.GET,
+		ResponseEntity<ColetaDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.GET,
 				null, ColetaDtoDetalhar.class, idEquipeExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -440,7 +441,7 @@ class ColetaControllerTest {
 
 		Long idNaoExistente = 15L;
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.GET, null,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.GET, null,
 				String.class, idNaoExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -453,7 +454,7 @@ class ColetaControllerTest {
 
 		Long idNaoExistente = 15L;
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPesquisaEquipe + "?nome", HttpMethod.GET, null,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PESQUISA_EQUIPE + "?nome", HttpMethod.GET, null,
 				String.class, idNaoExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -469,7 +470,7 @@ class ColetaControllerTest {
 		Long idEquipeExistente = 1L;
 
 		ResponseEntity<PageResponse<ColetaDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPesquisaEquipe + "/{id}", HttpMethod.GET, null,
+				URI_PESQUISA_EQUIPE + "/{id}", HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<ColetaDtoDetalhar>>() {
 				}, idEquipeExistente);
 
@@ -492,7 +493,7 @@ class ColetaControllerTest {
 
 		Long idColetaExistente = 1L;
 
-		ResponseEntity<Void> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.DELETE, null,
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.DELETE, null,
 				Void.class, idColetaExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);

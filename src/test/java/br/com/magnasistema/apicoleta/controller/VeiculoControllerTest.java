@@ -48,8 +48,8 @@ class VeiculoControllerTest {
 	@Autowired
 	private VeiculoRepository veiculoRepository;
 
-	private final String uriPrincipal = "/veiculo";
-	private final String uriPesquisaEmpresa = "/veiculo/empresa";
+	private final String URI_PRINCIPAL = "/veiculo";
+	private final String URI_PESQUISA_EMPRESA = "/veiculo/empresa";
 
 	@BeforeEach
 	void inicializar() {
@@ -79,7 +79,7 @@ class VeiculoControllerTest {
 		VeiculoDtoCadastro requestBody = new VeiculoDtoCadastro(TipoVeiculo.CAMINHAO_COMPACTADOR, 50D, "1234xx9", 1950,
 				1L);
 
-		ResponseEntity<VeiculoDtoDetalhar> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody,
+		ResponseEntity<VeiculoDtoDetalhar> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody,
 				VeiculoDtoDetalhar.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -96,7 +96,7 @@ class VeiculoControllerTest {
 
 		VeiculoDtoCadastro requestBody = new VeiculoDtoCadastro(tipo, capacidade, placa, anoFabricacao, idEmpresa);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).contains(mensagemDeErro);
@@ -109,7 +109,7 @@ class VeiculoControllerTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
-		ResponseEntity<PageResponse<VeiculoDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal,
+		ResponseEntity<PageResponse<VeiculoDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<VeiculoDtoDetalhar>>() {
 				});
 
@@ -128,7 +128,7 @@ class VeiculoControllerTest {
 	void listarVeiculosCenario2(String capacidade, TipoVeiculo tipo) {
 
 		ResponseEntity<PageResponse<VeiculoDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPrincipal + "?capacidade=" + capacidade + "&tipo=" + tipo, HttpMethod.GET, null,
+				URI_PRINCIPAL + "?capacidade=" + capacidade + "&tipo=" + tipo, HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<VeiculoDtoDetalhar>>() {
 				});
 
@@ -147,7 +147,7 @@ class VeiculoControllerTest {
 	void listarVeiculosCenario3(String capacidade, TipoVeiculo tipo) {
 
 		ResponseEntity<PageResponse<VeiculoDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPrincipal + "?capacidade=10", HttpMethod.GET, null,
+				URI_PRINCIPAL + "?capacidade=10", HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<VeiculoDtoDetalhar>>() {
 				});
 
@@ -166,7 +166,7 @@ class VeiculoControllerTest {
 		Long idEmpresaExistente = 1L;
 
 		ResponseEntity<PageResponse<VeiculoDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPesquisaEmpresa + "/{id}", HttpMethod.GET, null,
+				URI_PESQUISA_EMPRESA + "/{id}", HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<VeiculoDtoDetalhar>>() {
 				}, idEmpresaExistente);
 
@@ -186,7 +186,7 @@ class VeiculoControllerTest {
 		Long idEmpresaExistente = 1L;
 
 		ResponseEntity<PageResponse<VeiculoDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPesquisaEmpresa + "/{id}?capacidade=" + capacidade + "&tipo=" + tipo, HttpMethod.GET, null,
+				URI_PESQUISA_EMPRESA + "/{id}?capacidade=" + capacidade + "&tipo=" + tipo, HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<VeiculoDtoDetalhar>>() {
 				}, idEmpresaExistente);
 
@@ -205,7 +205,7 @@ class VeiculoControllerTest {
 		Long idEmpresaExistente = 1L;
 
 		ResponseEntity<PageResponse<VeiculoDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPesquisaEmpresa + "/{id}?capacidade=10", HttpMethod.GET, null,
+				URI_PESQUISA_EMPRESA + "/{id}?capacidade=10", HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<VeiculoDtoDetalhar>>() {
 				}, idEmpresaExistente);
 
@@ -223,7 +223,7 @@ class VeiculoControllerTest {
 	void detalharVeiculoPorId() {
 		Long idVeiculoExistente = 1L;
 
-		ResponseEntity<VeiculoDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}",
+		ResponseEntity<VeiculoDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}",
 				HttpMethod.GET, null, VeiculoDtoDetalhar.class, idVeiculoExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -241,7 +241,7 @@ class VeiculoControllerTest {
 
 		VeiculoDtoAtualizar requestBody = new VeiculoDtoAtualizar(tipo, capacidade, placa, anoFabricacao, idEmpresa);
 
-		ResponseEntity<VeiculoDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}",
+		ResponseEntity<VeiculoDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}",
 				HttpMethod.PUT, new HttpEntity<>(requestBody), VeiculoDtoDetalhar.class, idVeiculoExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -259,7 +259,7 @@ class VeiculoControllerTest {
 
 		VeiculoDtoAtualizar requestBody = new VeiculoDtoAtualizar(tipo, capacidade, placa, anoFabricacao, idEmpresa);
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), String.class, idVeiculoExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -272,7 +272,7 @@ class VeiculoControllerTest {
 	void excluirVeiculoPorId() {
 		Long idVeiculoExistente = 1L;
 
-		ResponseEntity<Void> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.DELETE, null,
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.DELETE, null,
 				Void.class, idVeiculoExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);

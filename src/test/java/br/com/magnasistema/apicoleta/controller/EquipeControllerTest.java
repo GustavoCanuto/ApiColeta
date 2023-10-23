@@ -50,7 +50,7 @@ class EquipeControllerTest {
 	@Autowired
 	private VeiculoRepository veiculoRepository;
 
-	private final String uriPrincipal = "/equipe";
+	private final String URI_PRINCIPAL = "/equipe";
 
 	@BeforeEach
 	void inicializar() {
@@ -76,7 +76,7 @@ class EquipeControllerTest {
 
 		EquipeDtoCadastro requestBody = new EquipeDtoCadastro("equipe teste2", "coleta", 1L);
 
-		ResponseEntity<EquipeDtoDetalhar> responseEntity = restTemplate.postForEntity(uriPrincipal,
+		ResponseEntity<EquipeDtoDetalhar> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL,
 				new HttpEntity<>(requestBody), EquipeDtoDetalhar.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -91,7 +91,7 @@ class EquipeControllerTest {
 
 		EquipeDtoCadastro requestBody = new EquipeDtoCadastro("equipe teste2", "coleta", 15L);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, new HttpEntity<>(requestBody),
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, new HttpEntity<>(requestBody),
 				String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -108,7 +108,7 @@ class EquipeControllerTest {
 
 		EquipeDtoCadastro requestBody = new EquipeDtoCadastro(nome, descricao, idVeiculo);
 
-		ResponseEntity<EquipeDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<EquipeDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), EquipeDtoDetalhar.class, idEquipeExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -125,7 +125,7 @@ class EquipeControllerTest {
 
 		EquipeDtoCadastro requestBody = new EquipeDtoCadastro("equipe teste2", "coleta", 15L);
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.PUT,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), String.class, idEquipeExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -137,7 +137,7 @@ class EquipeControllerTest {
 	@DisplayName("Deveria listar equipes ")
 	void listarEquipes() {
 
-		ResponseEntity<PageResponse<EquipeDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal,
+		ResponseEntity<PageResponse<EquipeDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<EquipeDtoDetalhar>>() {
 				});
 
@@ -155,7 +155,7 @@ class EquipeControllerTest {
 	void detalharEquipePorId() {
 		Long idEquipeExistente = 1L;
 
-		ResponseEntity<EquipeDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.GET,
+		ResponseEntity<EquipeDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.GET,
 				null, EquipeDtoDetalhar.class, idEquipeExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -169,7 +169,7 @@ class EquipeControllerTest {
 	void excluirEquipePorId() {
 		Long idEquipeExistente = 1L;
 
-		ResponseEntity<Void> responseEntity = restTemplate.exchange(uriPrincipal + "/{id}", HttpMethod.DELETE, null,
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(URI_PRINCIPAL + "/{id}", HttpMethod.DELETE, null,
 				Void.class, idEquipeExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);

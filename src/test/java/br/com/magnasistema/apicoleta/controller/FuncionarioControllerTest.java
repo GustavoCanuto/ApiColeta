@@ -50,8 +50,8 @@ class FuncionarioControllerTest {
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
 
-	private final String uriPrincipal = "/funcionario";
-	private final String uriPesquisaEmpresa = "/funcionario/empresa";
+	private final String URI_PRINCIPAL = "/funcionario";
+	private final String URI_PESQUISA_EMPRESA = "/funcionario/empresa";
 
 	@BeforeEach
 	void inicializar() {
@@ -82,7 +82,7 @@ class FuncionarioControllerTest {
 		FuncionarioDtoCadastro requestBody = new FuncionarioDtoCadastro("func", "11133366623",
 				LocalDate.of(1990, 5, 15), "f2@gmail.com", TipoFuncao.COLETOR, 1L);
 
-		ResponseEntity<FuncionarioDtoDetalhar> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody,
+		ResponseEntity<FuncionarioDtoDetalhar> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody,
 				FuncionarioDtoDetalhar.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -100,7 +100,7 @@ class FuncionarioControllerTest {
 		FuncionarioDtoCadastro requestBody = new FuncionarioDtoCadastro(nome, cpf, dataNascimento, email, funcao,
 				idEmpresa);
 
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(uriPrincipal, requestBody, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URI_PRINCIPAL, requestBody, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(responseEntity.getBody()).contains(mensagemDeErro);
@@ -113,7 +113,7 @@ class FuncionarioControllerTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
-		ResponseEntity<PageResponse<FuncionarioDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal,
+		ResponseEntity<PageResponse<FuncionarioDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<FuncionarioDtoDetalhar>>() {
 				});
 
@@ -133,7 +133,7 @@ class FuncionarioControllerTest {
 	void listarFuncionariosCenario2(String nome) {
 
 		ResponseEntity<PageResponse<FuncionarioDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPrincipal + "?funcao=" + nome, HttpMethod.GET, null,
+				URI_PRINCIPAL + "?funcao=" + nome, HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<FuncionarioDtoDetalhar>>() {
 				});
 
@@ -152,7 +152,7 @@ class FuncionarioControllerTest {
 	void listarFuncionariosPorEmpresaCenario1() {
 		Long idEmpresaExistente = 1L;
 
-		ResponseEntity<PageResponse<FuncionarioDtoDetalhar>> responseEntity = restTemplate.exchange(uriPrincipal,
+		ResponseEntity<PageResponse<FuncionarioDtoDetalhar>> responseEntity = restTemplate.exchange(URI_PRINCIPAL,
 				HttpMethod.GET, null, new ParameterizedTypeReference<PageResponse<FuncionarioDtoDetalhar>>() {
 				}, idEmpresaExistente);
 
@@ -176,7 +176,7 @@ class FuncionarioControllerTest {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		ResponseEntity<PageResponse<FuncionarioDtoDetalhar>> responseEntity = restTemplate.exchange(
-				uriPesquisaEmpresa+"/{id}?funcao=" + nome, HttpMethod.GET, null,
+				URI_PESQUISA_EMPRESA+"/{id}?funcao=" + nome, HttpMethod.GET, null,
 				new ParameterizedTypeReference<PageResponse<FuncionarioDtoDetalhar>>() {
 				}, idEmpresaExistente);
 
@@ -195,7 +195,7 @@ class FuncionarioControllerTest {
 	void detalharFuncionarioPorId() {
 		Long idFuncionarioExistente = 1L;
 
-		ResponseEntity<FuncionarioDtoDetalhar> responseEntity = restTemplate.exchange(uriPrincipal+"/{id}",
+		ResponseEntity<FuncionarioDtoDetalhar> responseEntity = restTemplate.exchange(URI_PRINCIPAL+"/{id}",
 				HttpMethod.GET, null, FuncionarioDtoDetalhar.class, idFuncionarioExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -234,7 +234,7 @@ class FuncionarioControllerTest {
 		FuncionarioDtoAtualizar requestBody = new FuncionarioDtoAtualizar(nome, cpf, dataNascimento, email, funcao,
 				idEmpresa);
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uriPrincipal +"/{id}", HttpMethod.PUT,
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URI_PRINCIPAL +"/{id}", HttpMethod.PUT,
 				new HttpEntity<>(requestBody), String.class, idFuncionarioExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -247,7 +247,7 @@ class FuncionarioControllerTest {
 	void excluirFuncionarioPorId() {
 		Long idFuncionarioExistente = 1L;
 
-		ResponseEntity<Void> responseEntity = restTemplate.exchange(uriPrincipal+ "/{id}", HttpMethod.DELETE, null,
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(URI_PRINCIPAL+ "/{id}", HttpMethod.DELETE, null,
 				Void.class, idFuncionarioExistente);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
